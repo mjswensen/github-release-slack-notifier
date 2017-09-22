@@ -8,14 +8,6 @@ const PORT = 8000;
 app.use(bodyParser.json());
 
 app.post('/', (req, res) => {
-  const attachments = req.body.release.body && [
-    {
-      fallback: `<${req.body.release.html_url}|Changelog>`,
-      color: 'good',
-      title: 'Release notes',
-      value: req.body.release.body,
-    },
-  ];
   request.post(
     process.env.SLACK_WEBHOOK_URL,
     {
@@ -23,7 +15,6 @@ app.post('/', (req, res) => {
         username: `${req.body.repository.name} release webhook`,
         icon_emoji: ':rocket:',
         text: `<${req.body.release.html_url}|${req.body.repository.name}@${req.body.release.tag_name}> released!`,
-        attachments,
       },
     }
   );
